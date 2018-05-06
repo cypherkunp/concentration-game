@@ -1,0 +1,27 @@
+{
+  "name": "concentration-game",
+  "version": "1.0.0",
+  "description": "A browser-based card matching game (also known as Concentration)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devvratio/concentration-game.git"
+  },
+  "keywords": [
+    "game"
+  ],
+  "author": "devvratshukla@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devvratio/concentration-game/issues"
+  },
+  "homepage": "https://github.com/devvratio/concentration-game#readme",
+  "devDependencies": {
+    "browser-sync": "^2.24.4",
+    "gulp": "^3.9.1"
+  },
+  "dependencies": {}
+}
