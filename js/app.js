@@ -42,6 +42,25 @@ function renderCards() {
 }
 
 function startGame() {
-     renderCards();
-     bindEvent();
+    shuffle(cardList);
+    renderCards();
+    bindEvent();
+}
+
+/*
+ * shuffles the list of cards
+ * Shuffle function from http://stackoverflow.com/a/2450976
+ */
+function shuffle(cardList) {
+    var currentIndex = cardList.length, temporaryValue, randomIndex;
+
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = cardList[currentIndex];
+        cardList[currentIndex] = cardList[randomIndex];
+        cardList[randomIndex] = temporaryValue;
+    }
+
+    return cardList;
 }
