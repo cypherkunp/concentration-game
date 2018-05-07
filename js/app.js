@@ -19,32 +19,54 @@ var cardList = [
     'fa-diamond',
     'fa-bomb'
 ];
-var cardSelected = [];
-var showCounter = 0;
-var totalMoves = 0;
-var matchFound = false;
+var lastSelectedElement = null;
+var allowClicks = true;
 
 $(document).ready(function () {
     startGame();
 });
 
-function bindEvent() {
-    $('.card').click(function () {
-        debugger;
-        $(this).addClass('open show');
-    });
+function onClickEvent() {
+        thisElement = this;
+        if (!lastSelectedElement) {
+            lastSelectedElement = this;
+            $(thisElement).addClass('open show');
+            $(thisElement).off('click');
+            console.log('First card selected ' + thisElement.firstChild.id);
+        } else {
+            matchingEngine(thisElement);
+        }
+}
+
+function matchingEngine(thisElement) {
+    if (thisElement.firstChild.className == lastSelectedElement.firstChild.className) {
+        $(thisElement).addClass('open show');
+        $(thisElement).off('click');
+        console.log('Match found ' + lastSelectedElement.firstChild.id + " & " + thisElement.firstChild.id);
+        lastSelectedElement = null;
+    } else {
+        $(thisElement).addClass('open show');
+        setTimeout(() => {
+            $(thisElement).removeClass('open show');
+            $(lastSelectedElement).removeClass('open show');
+            $(lastSelectedElement).on('click', onClickEvent);
+            console.log('Match not found ' + lastSelectedElement.firstChild.id + " & " + thisElement.firstChild.id);
+            lastSelectedElement = null;
+        }, 500);
+
+    }
 }
 
 function renderCards() {
     for (let i = 0; i < cardList.length; i++) {
-        $('.deck').append(`<li class="card"><i class="fa ${cardList[i]}"></i></li>`);
+        $('.deck').append(`<li class="card"><i id="card-${i}" class="fa ${cardList[i]}"></i></li>`);
     }
 }
 
 function startGame() {
     shuffle(cardList);
     renderCards();
-    bindEvent();
+    $('.card').click(onClickEvent);
 }
 
 /*
@@ -61,6 +83,5 @@ function shuffle(cardList) {
         cardList[currentIndex] = cardList[randomIndex];
         cardList[randomIndex] = temporaryValue;
     }
-
     return cardList;
 }
