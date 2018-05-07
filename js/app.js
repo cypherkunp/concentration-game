@@ -20,22 +20,23 @@ var cardList = [
     'fa-bomb'
 ];
 var lastSelectedElement = null;
-var allowClicks = true;
+var totalMoves = 0;
 
 $(document).ready(function () {
     startGame();
 });
 
 function onClickEvent() {
-        thisElement = this;
-        if (!lastSelectedElement) {
-            lastSelectedElement = this;
-            $(thisElement).addClass('open show');
-            $(thisElement).off('click');
-            console.log('First card selected ' + thisElement.firstChild.id);
-        } else {
-            matchingEngine(thisElement);
-        }
+    updateTotalMoves();
+    thisElement = this;
+    if (!lastSelectedElement) {
+        lastSelectedElement = this;
+        $(thisElement).addClass('open show');
+        $(thisElement).off('click');
+        console.log('First card selected ' + thisElement.firstChild.id);
+    } else {
+        matchingEngine(thisElement);
+    }
 }
 
 function matchingEngine(thisElement) {
@@ -63,7 +64,13 @@ function renderCards() {
     }
 }
 
+function updateTotalMoves() {
+    totalMoves++;
+    $('#moves-counter').text(totalMoves);
+}
+
 function startGame() {
+    totalMoves = 0;
     shuffle(cardList);
     renderCards();
     $('.card').click(onClickEvent);
