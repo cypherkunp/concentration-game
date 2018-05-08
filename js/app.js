@@ -70,10 +70,18 @@ function updateTotalMoves() {
 }
 
 function startGame() {
-    totalMoves = 0;
     shuffle(cardList);
     renderCards();
     $('.card').click(onClickEvent);
+    $('#restart-game-icon').click(restartGame);
+}
+
+function restartGame() {
+    $('#deck').empty();
+    $('#moves-counter').text(0);
+    lastSelectedElement = null;
+    totalMoves = 0;
+    startGame();
 }
 
 /*
