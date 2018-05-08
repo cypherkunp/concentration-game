@@ -23,7 +23,7 @@ var lastSelectedElement = null;
 var totalMoves = 0;
 
 $(document).ready(function () {
-    startGame();
+    initializeGame();
 });
 
 function onClickEvent() {
@@ -69,11 +69,19 @@ function updateTotalMoves() {
     $('#moves-counter').text(totalMoves);
 }
 
+function initializeGame() {
+    $('#restart-game-icon').click(restartGame);
+    $('#play-game-icon').click(startGame);
+    $.dialog({
+        title: 'Hey there!',
+        content: 'Click on start button to play the game.'
+    });
+}
+
 function startGame() {
     shuffle(cardList);
     renderCards();
     $('.card').click(onClickEvent);
-    $('#restart-game-icon').click(restartGame);
 }
 
 function restartGame() {
