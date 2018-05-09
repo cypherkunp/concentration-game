@@ -1,3 +1,7 @@
+$(document).ready(function () {
+    initializeGame();
+});
+
 /*
  * Create a list that holds all of your cards
  */
@@ -21,10 +25,27 @@ var cardList = [
 ];
 var lastSelectedElement = null;
 var totalMoves = 0;
+var totalMatchFound = 0;
 
-$(document).ready(function () {
-    initializeGame();
-});
+
+function initializeGlobalVariables() {
+    lastSelectedElement = null;
+    totalMoves = 0;
+    totalMatchFound = 0;
+}
+
+function matchFound() {
+    totalMatchFound++;
+    if(totalMatchFound === 8){
+        $.dialog({
+            title: 'Awesome!',
+            content: `You were able to match all the cards in ${totalMoves} moves`,
+            theme: 'supervan',
+            escapeKey: true,
+            backgroundDismiss: true
+        });
+    }
+}
 
 function onClickEvent() {
     updateTotalMoves();
@@ -44,6 +65,7 @@ function matchingEngine(thisElement) {
         $(thisElement).addClass('open show');
         $(thisElement).off('click');
         console.log('Match found ' + lastSelectedElement.firstChild.id + " & " + thisElement.firstChild.id);
+        matchFound();
         lastSelectedElement = null;
     } else {
         $(thisElement).addClass('open show');
@@ -70,26 +92,22 @@ function updateTotalMoves() {
 }
 
 function initializeGame() {
-    $('#restart-game-icon').click(restartGame);
+    $('#restart-game-icon').click(startGame);
     $('#play-game-icon').click(startGame);
     $.dialog({
         title: 'Hey there!',
-        content: 'Click on start button to play the game.'
+        content: 'Click on start button to play the game.',
     });
 }
 
 function startGame() {
+    initializeGlobalVariables();
+    $('#deck').empty();
+    $('#moves-counter').text(0);
+
     shuffle(cardList);
     renderCards();
     $('.card').click(onClickEvent);
-}
-
-function restartGame() {
-    $('#deck').empty();
-    $('#moves-counter').text(0);
-    lastSelectedElement = null;
-    totalMoves = 0;
-    startGame();
 }
 
 /*
