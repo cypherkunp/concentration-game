@@ -28,6 +28,9 @@ var totalMoves = 0;
 var totalMatchFound = 0;
 var starRating = 0;
 
+// timer object
+var timer = new Timer();
+
 function initializeGlobalVariables() {
     lastSelectedElement = null;
     totalMoves = 0;
@@ -38,12 +41,17 @@ function initializeGlobalVariables() {
 function matchFound() {
     totalMatchFound++;
     if (totalMatchFound === 8) {
+        timer.pause();
         $.dialog({
             title: 'Awesome!',
-            content: `You were able to match all the cards in <h3>${totalMoves} moves</h3> and with <h3>${starRating} star rating</h3>`,
+            content: `You were able to match all the cards in <h3>${totalMoves} 
+            moves</h3> and with <h3>${starRating} star rating</h3> and in ${timer.getTimeValues().toString()} time`,
             theme: 'supervan',
             escapeKey: true,
-            backgroundDismiss: true
+            backgroundDismiss: true,
+            onClose: function () {
+                timer.stop();
+            }
         });
     }
 }
@@ -119,9 +127,16 @@ function initializeGame() {
         escapeKey: true,
         backgroundDismiss: true
     });
+    timer.addEventListener('secondsUpdated', function (e) {
+        $('#timer').html(timer.getTimeValues().toString());
+    });
 }
 
+/**
+ * Function to start the game.
+ */
 function startGame() {
+
     initializeGlobalVariables();
     setStars(3);
     $('#deck').empty();
@@ -130,6 +145,25 @@ function startGame() {
     shuffle(cardList);
     renderCards();
     $('.card').click(onClickEvent);
+
+    try {
+        timer.start();
+    } catch (error) {
+        debugger;
+        if (error.message.includes("Timer already running")){
+            timer.stop();
+            timer.start();
+        }
+    }
+    $('#timer').html("00:00:00");
+}
+
+/**
+ * Function to reset the game.
+ */
+function resetGame() {
+    timer.stop();
+    startGame();
 }
 
 /*
