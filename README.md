@@ -15,6 +15,12 @@ The gameplay rules are very simple: flip over two hidden cards at a time to loca
 4. If the cards do not match, both cards are flipped face down.
 5. The game ends once all cards have been correctly matched.
 
+## Dev setup
+1. git clone this repo
+2. From the project's root directory run:
+```$ npm install``` and then ```$ gulp```
+
 ## Dependencies
 1. [jquery](http://jquery.com/)
 2. [jquery-confirm](http://craftpip.github.io/jquery-confirm/)
+3. [EasyTimer.js](https://albert-gonzalez.github.io/easytimer.js/)
