@@ -49,7 +49,6 @@ function matchFound() {
 }
 
 function onClickEvent() {
-    updateTotalMoves();
     thisElement = this;
     if (!lastSelectedElement) {
         lastSelectedElement = this;
@@ -62,6 +61,7 @@ function onClickEvent() {
 }
 
 function matchingEngine(thisElement) {
+    updateTotalMoves();
     if (thisElement.firstChild.className == lastSelectedElement.firstChild.className) {
         $(thisElement).addClass('open show match');
         $(lastSelectedElement).addClass('match');
