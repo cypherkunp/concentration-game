@@ -26,19 +26,21 @@ var cardList = [
 var lastSelectedElement = null;
 var totalMoves = 0;
 var totalMatchFound = 0;
+var starRating = 0;
 
 function initializeGlobalVariables() {
     lastSelectedElement = null;
     totalMoves = 0;
     totalMatchFound = 0;
+    starRating = 0;
 }
 
 function matchFound() {
     totalMatchFound++;
-    if(totalMatchFound === 8){
+    if (totalMatchFound === 8) {
         $.dialog({
             title: 'Awesome!',
-            content: `You were able to match all the cards in ${totalMoves} moves`,
+            content: `You were able to match all the cards in <h3>${totalMoves} moves</h3> and with <h3>${starRating} star rating</h3>`,
             theme: 'supervan',
             escapeKey: true,
             backgroundDismiss: true
@@ -90,6 +92,22 @@ function renderCards() {
 function updateTotalMoves() {
     totalMoves++;
     $('#moves-counter').text(totalMoves);
+    if (totalMoves > 15 && totalMoves <= 20) {
+        setStars(2);
+    } else if (totalMoves > 20) {
+        setStars(1);
+    }
+}
+
+function setStars(count) {
+    starRating = count;    
+    $('#stars').empty();
+    for (var i = 0; i < count; i++) {
+        $('#stars').append('<li><i class="fa fa-star"></i></li>');
+    }
+    for (let i = count; i < 3; i++) {
+        $('#stars').append('<li><i class="fa fa-star-o"></i></li>');
+    }
 }
 
 function initializeGame() {
@@ -98,11 +116,14 @@ function initializeGame() {
     $.dialog({
         title: 'Hey there!',
         content: 'Click on start button to play the game.',
+        escapeKey: true,
+        backgroundDismiss: true
     });
 }
 
 function startGame() {
     initializeGlobalVariables();
+    setStars(3);
     $('#deck').empty();
     $('#moves-counter').text(0);
 
