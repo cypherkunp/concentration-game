@@ -23,16 +23,15 @@ var cardList = [
     'fa-diamond',
     'fa-bomb'
 ];
-var lastSelectedElement = null;
+var selectedElements = [];
 var totalMoves = 0;
 var totalMatchFound = 0;
 var starRating = 0;
-
 // timer object
 var timer = new Timer();
 
 function initializeGlobalVariables() {
-    lastSelectedElement = null;
+    selectedElements = [];
     totalMoves = 0;
     totalMatchFound = 0;
     starRating = 0;
@@ -57,37 +56,36 @@ function matchFound() {
 }
 
 function onClickEvent() {
-    thisElement = this;
-    if (!lastSelectedElement) {
-        lastSelectedElement = this;
-        $(thisElement).addClass('open show');
-        $(thisElement).off('click');
-        console.log('First card selected ' + thisElement.firstChild.id);
-    } else {
-        matchingEngine(thisElement);
+    if (selectedElements.length == 0) {
+        selectedElements.push($(this));
+        $(selectedElements[0]).addClass('open show');
+        $(selectedElements[0]).off('click');
+        console.log('First card selected ' + selectedElements[0][0].firstChild.id);
+    } else if (selectedElements.length == 1) {
+        selectedElements.push($(this));
+        matchingEngine();
     }
 }
 
-function matchingEngine(thisElement) {
+function matchingEngine() {
     updateTotalMoves();
-    if (thisElement.firstChild.className == lastSelectedElement.firstChild.className) {
-        $(thisElement).addClass('open show match');
-        $(lastSelectedElement).addClass('match');
-        $(thisElement).off('click');
-        console.log('Match found ' + lastSelectedElement.firstChild.id + " & " + thisElement.firstChild.id);
+    if (selectedElements[0][0].firstChild.className == selectedElements[1][0].firstChild.className) {
+        $(selectedElements[1]).addClass('open show match');
+        $(selectedElements[0]).addClass('match');
+        $(selectedElements[1]).off('click');
+        console.log('Match found ' + selectedElements[1][0].firstChild.id + " & " + selectedElements[0][0].firstChild.id);
         matchFound();
-        lastSelectedElement = null;
+        selectedElements = [];
     } else {
-        $(thisElement).addClass('open show nomatch');
-        $(lastSelectedElement).addClass('nomatch');
+        $(selectedElements[1]).addClass('open show nomatch');
+        $(selectedElements[0]).addClass('nomatch');
         setTimeout(() => {
-            $(thisElement).removeClass('open show nomatch');
-            $(lastSelectedElement).removeClass('open show nomatch');
-            $(lastSelectedElement).on('click', onClickEvent);
-            console.log('Match not found ' + lastSelectedElement.firstChild.id + " & " + thisElement.firstChild.id);
-            lastSelectedElement = null;
+            $(selectedElements[1]).removeClass('open show nomatch');
+            $(selectedElements[0]).removeClass('open show nomatch');
+            $(selectedElements[0]).on('click', onClickEvent);
+            console.log('Match not found ' + selectedElements[1][0].firstChild.id + " & " + selectedElements[0][0].firstChild.id);
+            selectedElements = [];
         }, 800);
-
     }
 }
 
@@ -108,7 +106,7 @@ function updateTotalMoves() {
 }
 
 function setStars(count) {
-    starRating = count;    
+    starRating = count;
     $('#stars').empty();
     for (var i = 0; i < count; i++) {
         $('#stars').append('<li><i class="fa fa-star"></i></li>');
@@ -150,7 +148,7 @@ function startGame() {
         timer.start();
     } catch (error) {
         debugger;
-        if (error.message.includes("Timer already running")){
+        if (error.message.includes("Timer already running")) {
             timer.stop();
             timer.start();
         }
