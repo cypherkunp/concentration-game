@@ -38,7 +38,7 @@ h1 {
 .deck {
     width: 660px;
     min-height: 680px;
-    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+    background: linear-gradient(160deg, #f188c9 20%, #aa7ecd 100%);
     padding: 32px;
     border-radius: 10px;
     box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
@@ -61,10 +61,11 @@ h1 {
     justify-content: center;
     align-items: center;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+    -webkit-transform: rotateY(-180);
 }
 
 .deck .card.open {
-    transform: rotateY(0);
+    transform: rotateY(180);
     background: #02b3e4;
     cursor: default;
 }
@@ -86,7 +87,7 @@ h1 {
 .score-panel {
     border-radius: 10px;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
-    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+    background: linear-gradient(160deg, #f369be 50%, #aa7ecd 110%);
     text-align: left;
     width: 345px;
     margin-bottom: 10px;
@@ -119,4 +120,36 @@ h1 {
 .score-panel .moves {
     float: left;
     margin: 10px;
+}
+
+.nomatch {
+    animation: shake 1s cubic-bezier(.36, .07, .19, .97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+@keyframes shake {
+    10%, 90% {
+        transform: translate3d(0, -1px, 0);
+    }
+    20%, 80% {
+        transform: translate3d(0, 2px, 0);
+    }
+    30%, 50%, 70% {
+        transform: translate3d(0, -4px, 0);
+    }
+    40%, 60% {
+        transform: translate3d(0, 4px, 0);
+    }
+}
+.sparkley {
+    background: lighten( #2c3e50, 10%);
+    border: none;
+    padding: 16px 36px;
+    font-weight: normal;
+    border-radius: 3px;
+    transition: all 0.25s ease;
+    box-shadow: 0 38px 32px -23px black;
+    margin: 0 1em 1em;
 }

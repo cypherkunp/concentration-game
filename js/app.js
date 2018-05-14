@@ -27,7 +27,6 @@ var lastSelectedElement = null;
 var totalMoves = 0;
 var totalMatchFound = 0;
 
-
 function initializeGlobalVariables() {
     lastSelectedElement = null;
     totalMoves = 0;
@@ -62,20 +61,22 @@ function onClickEvent() {
 
 function matchingEngine(thisElement) {
     if (thisElement.firstChild.className == lastSelectedElement.firstChild.className) {
-        $(thisElement).addClass('open show');
+        $(thisElement).addClass('open show match');
+        $(lastSelectedElement).addClass('match');
         $(thisElement).off('click');
         console.log('Match found ' + lastSelectedElement.firstChild.id + " & " + thisElement.firstChild.id);
         matchFound();
         lastSelectedElement = null;
     } else {
-        $(thisElement).addClass('open show');
+        $(thisElement).addClass('open show nomatch');
+        $(lastSelectedElement).addClass('nomatch');
         setTimeout(() => {
-            $(thisElement).removeClass('open show');
-            $(lastSelectedElement).removeClass('open show');
+            $(thisElement).removeClass('open show nomatch');
+            $(lastSelectedElement).removeClass('open show nomatch');
             $(lastSelectedElement).on('click', onClickEvent);
             console.log('Match not found ' + lastSelectedElement.firstChild.id + " & " + thisElement.firstChild.id);
             lastSelectedElement = null;
-        }, 500);
+        }, 800);
 
     }
 }
