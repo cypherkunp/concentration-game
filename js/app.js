@@ -37,6 +37,9 @@ function initializeGlobalVariables() {
     starRating = 0;
 }
 
+/**
+ * Function that verifies whether the cards selected match of not.
+ */
 function matchFound() {
     totalMatchFound++;
     if (totalMatchFound === 8) {
@@ -60,20 +63,21 @@ function onClickEvent() {
         selectedElements.push($(this));
         $(selectedElements[0]).addClass('open show');
         $(selectedElements[0]).off('click');
-        console.log('First card selected ' + selectedElements[0][0].firstChild.id);
     } else if (selectedElements.length == 1) {
         selectedElements.push($(this));
         matchingEngine();
     }
 }
 
+/**
+ * Function that matches the last two selected cards.
+ */
 function matchingEngine() {
-    updateTotalMoves();
+    updateScoreBoard();
     if (selectedElements[0][0].firstChild.className == selectedElements[1][0].firstChild.className) {
         $(selectedElements[1]).addClass('open show match');
         $(selectedElements[0]).addClass('match');
         $(selectedElements[1]).off('click');
-        console.log('Match found ' + selectedElements[1][0].firstChild.id + " & " + selectedElements[0][0].firstChild.id);
         matchFound();
         selectedElements = [];
     } else {
@@ -83,19 +87,24 @@ function matchingEngine() {
             $(selectedElements[1]).removeClass('open show nomatch');
             $(selectedElements[0]).removeClass('open show nomatch');
             $(selectedElements[0]).on('click', onClickEvent);
-            console.log('Match not found ' + selectedElements[1][0].firstChild.id + " & " + selectedElements[0][0].firstChild.id);
             selectedElements = [];
         }, 800);
     }
 }
 
+/**
+ * Function to render the cards on the screen.
+ */
 function renderCards() {
     for (let i = 0; i < cardList.length; i++) {
         $('.deck').append(`<li class="card"><i id="card-${i}" class="fa ${cardList[i]}"></i></li>`);
     }
 }
 
-function updateTotalMoves() {
+/**
+ * Updates the game score board that comprises of stars and moves.
+ */
+function updateScoreBoard() {
     totalMoves++;
     $('#moves-counter').text(totalMoves);
     if (totalMoves > 15 && totalMoves <= 20) {
@@ -105,6 +114,10 @@ function updateTotalMoves() {
     }
 }
 
+/**
+ * Function to set the stars based on the no of moves on the score board.
+ * @param count 
+ */
 function setStars(count) {
     starRating = count;
     $('#stars').empty();
@@ -116,6 +129,9 @@ function setStars(count) {
     }
 }
 
+/**
+ * Function that's called when the page loads.
+ */
 function initializeGame() {
     $('#restart-game-icon').click(startGame);
     $('#play-game-icon').click(startGame);
@@ -147,7 +163,6 @@ function startGame() {
     try {
         timer.start();
     } catch (error) {
-        debugger;
         if (error.message.includes("Timer already running")) {
             timer.stop();
             timer.start();
