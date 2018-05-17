@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    // Once the webpage is completely loaded this callback function is invoked.
     initializeGame();
 });
 
@@ -30,6 +31,9 @@ var starRating = 0;
 // timer object
 var timer = new Timer();
 
+/**
+ * Function to initialize the global variables.
+ */
 function initializeGlobalVariables() {
     selectedElements = [];
     totalMoves = 0;
@@ -38,7 +42,7 @@ function initializeGlobalVariables() {
 }
 
 /**
- * Function that verifies whether the cards selected match of not.
+ * Function that verifies whether the cards selected match or not.
  */
 function matchFound() {
     totalMatchFound++;
@@ -46,8 +50,9 @@ function matchFound() {
         timer.pause();
         $.dialog({
             title: 'Awesome!',
-            content: `You were able to match all the cards in <h3>${totalMoves} 
-            moves</h3> and with <h3>${starRating} star rating</h3> and in ${timer.getTimeValues().toString()} time`,
+            content: `You were able to match all the cards in <h3>${totalMoves}
+            moves</h3> with <h3>${starRating} star rating</h3> in <h3>${timer.getTimeValues().toString()} time</h3>
+              </h1><a href="">Replay&nbsp&nbsp<i class="fa fa-refresh"></i></a></h1>`,
             theme: 'supervan',
             escapeKey: true,
             backgroundDismiss: true,
@@ -57,7 +62,9 @@ function matchFound() {
         });
     }
 }
-
+/**
+ * Function bound to the click event
+ */
 function onClickEvent() {
     if (selectedElements.length == 0) {
         selectedElements.push($(this));
@@ -68,7 +75,6 @@ function onClickEvent() {
         matchingEngine();
     }
 }
-
 /**
  * Function that matches the last two selected cards.
  */
@@ -91,7 +97,6 @@ function matchingEngine() {
         }, 800);
     }
 }
-
 /**
  * Function to render the cards on the screen.
  */
@@ -100,7 +105,6 @@ function renderCards() {
         $('.deck').append(`<li class="card"><i id="card-${i}" class="fa ${cardList[i]}"></i></li>`);
     }
 }
-
 /**
  * Updates the game score board that comprises of stars and moves.
  */
@@ -113,10 +117,9 @@ function updateScoreBoard() {
         setStars(1);
     }
 }
-
 /**
  * Function to set the stars based on the no of moves on the score board.
- * @param count 
+ * @param {number} count - The no of stars that you want to assign to the user.
  */
 function setStars(count) {
     starRating = count;
@@ -128,7 +131,6 @@ function setStars(count) {
         $('#stars').append('<li><i class="fa fa-star-o"></i></li>');
     }
 }
-
 /**
  * Function that's called when the page loads.
  */
@@ -145,7 +147,6 @@ function initializeGame() {
         $('#timer').html(timer.getTimeValues().toString());
     });
 }
-
 /**
  * Function to start the game.
  */
@@ -170,7 +171,6 @@ function startGame() {
     }
     $('#timer').html("00:00:00");
 }
-
 /**
  * Function to reset the game.
  */
